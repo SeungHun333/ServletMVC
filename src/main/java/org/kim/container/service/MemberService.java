@@ -13,6 +13,13 @@ public class MemberService {
     public boolean isAvailableId(String id) {
         Member member = dao.memberSelectById(id);
 
-        return member == null;
+        return member != null;
+    }
+
+    public boolean isAvailableEmail(String email) {
+        Member member = dao.memberSelectByEmail(email);
+
+        return member != null;
     }
 }
+

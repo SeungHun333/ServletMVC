@@ -7,15 +7,16 @@
 <body>
 <h1>회원가입</h1>
 <form action="register" method="post">
-    아이디:
-    <input type="text" id="id" name="id" required>
+    아이디:<input type="text" id="id" name="id" required>
     <button type="button" onclick="checkId()">중복확인</button>
     <span id="id-check-result"></span>
     <br><br>
-
     비밀번호: <input type="password" name="password" required><br><br>
     이름: <input type="text" name="name" required><br><br>
-    이메일: <input type="email" name="email" required><br><br>
+    이메일: <input type="email" id="email" name="email" required>
+    <button type="button" onclick="checkEmail()">중복확인</button>
+    <span id="email-check-result"></span>
+    <br><br>
     전화번호: <input type="text" name="phone"><br><br>
     생년월일: <input type="date" name="birth_date"><br><br>
     성별:
@@ -50,6 +51,29 @@
                 }
             })
             .catch(err => console.error(err));
+    }
+
+    function checkEmail() {
+    const email = document.getElementById('email').value;
+
+    if (!email) {
+        alert("이메일을 입력하세요.");
+        return;
+    }
+
+    fetch('checkEmail?email=' + encodeURIComponent(email))
+        .then(response => response.text())
+        .then(result => {
+            const resultSpan = document.getElementById('email-check-result');
+            if (result.trim() === 'duplicate') {
+                resultSpan.style.color = 'red';
+                resultSpan.innerText = '이미 사용 중인 이메일입니다.';
+            } else {
+                resultSpan.style.color = 'green';
+                resultSpan.innerText = '사용 가능한 이메일입니다!';
+            }
+        })
+        .catch(err => console.error(err));
     }
 </script>
 </body>

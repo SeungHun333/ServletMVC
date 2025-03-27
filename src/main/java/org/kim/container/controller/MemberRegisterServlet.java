@@ -35,17 +35,6 @@ public class MemberRegisterServlet extends HttpServlet {
         String address = req.getParameter("address");
         Date joinDate = new Date(System.currentTimeMillis());
 
-        System.out.println("로그인 정보 입력값:");
-        System.out.println("id: " + id);
-        System.out.println("password: " + password);
-        System.out.println("name: " + name);
-        System.out.println("email: " + email);
-        System.out.println("phone: " + phone);
-        System.out.println("birth_date: " + date);
-        System.out.println("gender: " + gender);
-        System.out.println("address: " + address);
-        System.out.println("joinDate: " + joinDate);
-
         Member member = new Member(id, password, name, email, phone, date, gender, address, joinDate, joinDate);
         MemberDao dao = new DaoFactory().memberDao();
 
@@ -55,7 +44,15 @@ public class MemberRegisterServlet extends HttpServlet {
             return;
         }
 
-        dao.memberInsert(member);
+        boolean result = dao.memberInsert(member);
+
+        if (result) {
+            // 회원가입 성공 → 로그인 페이지로 이동
+            resp.sendRedirect("login.jsp");
+        } else {
+            // 실패 시 에러 페이지 또는 다시 회원가입 페이지
+            resp.sendRedirect("index.html");
+        }
     }
 
     @Override

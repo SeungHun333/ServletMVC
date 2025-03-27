@@ -17,27 +17,33 @@
         <th>가입일</th>
     </tr>
     <%
-        List<Member> memberList = (List<Member>) request.getAttribute("memberList");
-        if (memberList != null) {
-            for (Member member : memberList) {
-    %>
-    <tr>
-        <td><%= member.getUserNo() %></td>
-        <td><%= member.getId() %></td>
-        <td><%= member.getName() %></td>
-        <td><%= member.getEmail() %></td>
-        <td><%= member.getPhone() %></td>
-        <td><%= member.getJoinDate() %></td>
-    </tr>
-    <%
-            }
-        } else {
-    %>
-    <tr><td colspan="6">조회할 회원이 없습니다.</td></tr>
-    <%
+        Member loginMember = (Member) session.getAttribute("loginMember");
+        if (loginMember == null) {
+            return;
         }
+
+        List<Member> memberList = (List<Member>) request.getAttribute("memberList");
     %>
+
+    <% if (memberList != null) { %>
+        <% for (Member member : memberList) {
+               if (member.getUserNo() == loginMember.getUserNo()) continue;
+        %>
+            <tr>
+                <td><%= member.getUserNo() %></td>
+                <td><%= member.getId() %></td>
+                <td><%= member.getName() %></td>
+                <td><%= member.getEmail() %></td>
+                <td><%= member.getPhone() %></td>
+                <td><%= member.getJoinDate() %></td>
+            </tr>
+        <% } %>
+    <% } else { %>
+        <tr>
+            <td colspan="6">회원 정보가 없습니다.</td>
+        </tr>
+    <% } %>
 </table>
-<a href="/mywebapp/index.html">홈으로 돌아가기</a>
+<a href="/mywebapp/main">홈으로 돌아가기</a>
 </body>
 </html>

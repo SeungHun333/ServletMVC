@@ -109,7 +109,72 @@ public class MemberDao {
         return null;
     }
 
-    public void memberInsert(Member member) {
+    public Member memberSelectByEmail(String email) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = connectionProtocol.getConnection();
+
+            String query = "SELECT * FROM MEMBER WHERE email = ?";
+            pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, email);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                Member member = fromResultSetForSelect(rs);
+                member.printMemberInfo();
+
+                return member;
+            } else {
+                System.out.println("회원 정보가 없습니다.");
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            connectionProtocol.closeResource(rs, pstmt, conn);
+        }
+
+        return null;
+    }
+
+    public Member memberSelectByLogin(String id, String password) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = connectionProtocol.getConnection();
+
+            String query = "SELECT * FROM MEMBER WHERE id = ? AND password = ?";
+            pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, id);
+            pstmt.setString(2, password);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                Member member = fromResultSetForSelect(rs);
+                member.printMemberInfo();
+
+                return member;
+            } else {
+                System.out.println("회원 정보가 없습니다.");
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            connectionProtocol.closeResource(rs, pstmt, conn);
+        }
+
+        return null;
+    }
+
+    public boolean memberInsert(Member member) {
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -133,8 +198,10 @@ public class MemberDao {
             int result = pstmt.executeUpdate();
             if (result > 0) {
                 System.out.println("회원 등록이 완료되었습니다!");
+                return true;
             } else {
                 System.out.println("회원 등록 실패");
+                return false;
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -143,6 +210,8 @@ public class MemberDao {
         } finally {
             connectionProtocol.closeResource(null, pstmt, conn);
         }
+
+        return false;
     }
 
     public void memberUpdate(Member member) {
