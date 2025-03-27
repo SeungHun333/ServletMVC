@@ -3,6 +3,7 @@ package org.kim.container.controller;
 import org.kim.container.dao.factory.DaoFactory;
 import org.kim.container.dao.MemberDao;
 import org.kim.container.domain.Member;
+import org.kim.container.util.AuthUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -23,7 +24,9 @@ public class MemberListServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("회원 정보 불러오기");
+        if (!AuthUtil.isLoggedIn(req)) {
+            resp.sendRedirect("login");
+        }
 
         MemberDao dao = new DaoFactory().memberDao();
         List<Member> memberList = dao.memberSelectAll();

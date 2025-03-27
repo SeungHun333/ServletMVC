@@ -3,6 +3,7 @@ package org.kim.container.controller;
 import org.kim.container.dao.MemberDao;
 import org.kim.container.dao.factory.DaoFactory;
 import org.kim.container.domain.Member;
+import org.kim.container.util.AuthUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,10 +17,8 @@ import java.util.stream.StreamSupport;
 public class MemberUpdateInfoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Member loginMember = (Member) req.getSession().getAttribute("loginMember");
-        if (loginMember == null) {
+        if (!AuthUtil.isLoggedIn(req)) {
             resp.sendRedirect("login");
-            return;
         }
 
         req.getRequestDispatcher("/WEB-INF/jsp/updateMemberInfo.jsp").forward(req, resp);
