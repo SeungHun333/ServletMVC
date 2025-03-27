@@ -3,9 +3,7 @@ package org.kim.container.controller;
 import org.kim.container.dao.MemberDao;
 import org.kim.container.dao.factory.DaoFactory;
 import org.kim.container.domain.Member;
-import org.kim.container.service.MemberService;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,7 +27,7 @@ public class MemberLoginOutServlet extends HttpServlet {
         String password = req.getParameter("password");
 
         try {
-            Member member = dao.memberSelectByLogin(id, password);
+            Member member = dao.memberSelectForLogin(id, password);
 
             resp.setContentType("text/plain;charset=UTF-8");
             if (member != null) {

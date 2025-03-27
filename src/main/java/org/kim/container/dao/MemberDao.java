@@ -45,7 +45,7 @@ public class MemberDao {
         return memberList;
     }
 
-    public Member memberSelectOne(int userNo) {
+    public Member memberSelectByUserNo(int userNo) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -141,7 +141,7 @@ public class MemberDao {
         return null;
     }
 
-    public Member memberSelectByLogin(String id, String password) {
+    public Member memberSelectForLogin(String id, String password) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -214,7 +214,7 @@ public class MemberDao {
         return false;
     }
 
-    public void memberUpdate(Member member) {
+    public boolean memberUpdate(Member member) {
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -222,7 +222,7 @@ public class MemberDao {
             conn = connectionProtocol.getConnection();
 
             String query = "UPDATE member SET " +
-                    "password = ?, name = ?, email = ?, phone = ?, address = ?, last_login = ? " +
+                    "password = ?, name = ?, email = ?, phone = ?, address = ?" +
                     "WHERE userNo = ?";
             pstmt = conn.prepareStatement(query);
             pstmt.setString(1, member.getPassword());
@@ -230,13 +230,13 @@ public class MemberDao {
             pstmt.setString(3, member.getEmail());
             pstmt.setString(4, member.getPhone());
             pstmt.setString(5, member.getAddress());
-            pstmt.setDate(6, member.getLastLogin());
-            pstmt.setInt(7, member.getUserNo());
+            pstmt.setInt(6, member.getUserNo());
 
             int result = pstmt.executeUpdate();
 
             if (result > 0) {
                 System.out.println("회원 정보가 업데이트되었습니다.");
+                return true;
             } else {
                 System.out.println("업데이트할 회원을 찾지 못했습니다.");
             }
@@ -247,6 +247,8 @@ public class MemberDao {
         } finally {
             connectionProtocol.closeResource(null, pstmt, conn);
         }
+
+        return false;
     }
 
     private Member fromResultSetForSelect(ResultSet rs) throws SQLException {

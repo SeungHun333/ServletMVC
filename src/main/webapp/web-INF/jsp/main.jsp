@@ -22,6 +22,7 @@
 <ul>
     <li><a href="/mywebapp/member-list">회원 목록 조회</a></li>
     <li><a href="/mywebapp/logProcess">로그아웃</a></li>
+    <li><a href="/mywebapp/updateMemberInfo">회원정보변경</a></li>
 </ul>
 
 </body>
