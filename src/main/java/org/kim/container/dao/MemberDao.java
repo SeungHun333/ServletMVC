@@ -77,6 +77,38 @@ public class MemberDao {
         return null;
     }
 
+    public Member memberSelectById(String id) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = connectionProtocol.getConnection();
+
+            String query = "SELECT * FROM MEMBER WHERE id = ?";
+            pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, id);
+            rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                Member member = fromResultSetForSelect(rs);
+                member.printMemberInfo();
+
+                return member;
+            } else {
+                System.out.println("회원 정보가 없습니다.");
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            connectionProtocol.closeResource(rs, pstmt, conn);
+        }
+
+        return null;
+    }
+
     public void memberInsert(Member member) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -84,8 +116,8 @@ public class MemberDao {
         try {
             conn = connectionProtocol.getConnection();
 
-            String query = "INSERT INTO member (id, password, name, email, phone, birth_date, gender, address, join_date, last_login) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT INTO member (userno, id, password, name, email, phone, birth_date, gender, address, join_date, last_login) " +
+                    "VALUES (member_seq.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             pstmt = conn.prepareStatement(query);
             pstmt.setString(1, member.getId());
             pstmt.setString(2, member.getPassword());
@@ -138,33 +170,6 @@ public class MemberDao {
                 System.out.println("회원 정보가 업데이트되었습니다.");
             } else {
                 System.out.println("업데이트할 회원을 찾지 못했습니다.");
-            }
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            connectionProtocol.closeResource(null, pstmt, conn);
-        }
-    }
-
-    public void memberDelete(int userNo) {
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-
-        try {
-            conn = connectionProtocol.getConnection();
-
-            String query = "DELETE FROM member WHERE userNo = ?";
-            pstmt = conn.prepareStatement(query);
-            pstmt.setInt(1, userNo);
-
-            int result = pstmt.executeUpdate();
-
-            if (result > 0) {
-                System.out.println("회원 정보가 삭제되었습니다.");
-            } else {
-                System.out.println("삭제할 회원을 찾지 못했습니다.");
             }
         } catch (ClassNotFoundException e) {
             e.printStackTrace();

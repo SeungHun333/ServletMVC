@@ -7,7 +7,12 @@
 <body>
 <h1>회원가입</h1>
 <form action="register" method="post">
-    아이디: <input type="text" name="id" required><br><br>
+    아이디:
+    <input type="text" id="id" name="id" required>
+    <button type="button" onclick="checkId()">중복확인</button>
+    <span id="id-check-result"></span>
+    <br><br>
+
     비밀번호: <input type="password" name="password" required><br><br>
     이름: <input type="text" name="name" required><br><br>
     이메일: <input type="email" name="email" required><br><br>
@@ -24,5 +29,29 @@
 </form>
 <br>
 <a href="index.html">메인으로</a>
+
+<script>
+    function checkId() {
+        const id = document.getElementById('id').value;
+        if (!id) {
+            alert("아이디를 입력하세요.");
+            return;
+        }
+        fetch('checkId?id=' + id)
+            .then(response => response.text())
+            .then(result => {
+                const resultSpan = document.getElementById('id-check-result');
+                if (result.trim() === 'duplicate') {
+                    resultSpan.style.color = 'red';
+                    resultSpan.innerText = '이미 사용 중인 아이디입니다.';
+                } else {
+                    resultSpan.style.color = 'green';
+                    resultSpan.innerText = '사용 가능한 아이디입니다!';
+                }
+            })
+            .catch(err => console.error(err));
+    }
+</script>
 </body>
 </html>
+

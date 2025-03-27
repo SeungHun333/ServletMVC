@@ -29,6 +29,10 @@ public class Member {
         this.lastLogin = lastLogin;
     }
 
+    public Member (String id, String password, String name, String email, String phone, Date birthDate, char gender, String address, Date joinDate, Date lastLogin) {
+        this(0, id, password, name, email, phone, birthDate, gender, address, joinDate, lastLogin);
+    }
+
     public int getUserNo() {
         return userNo;
     }
