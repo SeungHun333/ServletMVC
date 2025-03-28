@@ -251,6 +251,34 @@ public class MemberDao {
         return false;
     }
 
+    public boolean memberDelete(int userNo) {
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+
+        try {
+            conn = connectionProtocol.getConnection();
+
+            String query = "DELETE FROM MEMBER WHERE userNo = ?";
+            pstmt = conn.prepareStatement(query);
+            pstmt.setInt(1, userNo);
+            int rowsAffected = pstmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("회원 탈퇴를 완료했습니다.");
+                return true;
+            } else {
+                System.out.println("회원 탈퇴를 실패했습니다. (대상이 존재하지 않음)");
+            }
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            connectionProtocol.closeResource(null, pstmt, conn);
+        }
+
+        return false;
+    }
     private Member fromResultSetForSelect(ResultSet rs) throws SQLException {
         int userNo = rs.getInt("userNo");
         String id = rs.getString("id");

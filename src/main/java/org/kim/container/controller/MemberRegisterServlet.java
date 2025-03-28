@@ -48,7 +48,7 @@ public class MemberRegisterServlet extends HttpServlet {
 
         if (result) {
             // 회원가입 성공 → 로그인 페이지로 이동
-            resp.sendRedirect("login.jsp");
+            req.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(req, resp);
         } else {
             // 실패 시 에러 페이지 또는 다시 회원가입 페이지
             resp.sendRedirect("index.html");

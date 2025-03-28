@@ -35,7 +35,8 @@ public class MemberLoginOutServlet extends HttpServlet {
                 req.getSession().setAttribute("loginMember", member);
                 req.getRequestDispatcher("/WEB-INF/jsp/main.jsp").forward(req, resp);
             } else {
-                resp.getWriter().write("error");
+                System.out.println("로그인 실패!!");
+                resp.sendRedirect("login?result=error");
             }
         } catch (Exception e) {
             e.printStackTrace(); // 콘솔에 예외 로그 출력!

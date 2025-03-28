@@ -8,8 +8,8 @@
 <body>
 <h1>로그인</h1>
 
-<% String error = request.getParameter("error"); %>
-<% if ("true".equals(error)) { %>
+<% String error = request.getParameter("result"); %>
+<% if ("error".equals(error)) { %>
 <p style="color:red;">❌ 아이디 또는 비밀번호가 틀렸습니다.</p>
 <% } %>
 
