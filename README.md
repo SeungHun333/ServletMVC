@@ -91,3 +91,8 @@ Spring을 배우기 전에 간단하게 Servlet을 사용하여 MVC 패턴의 �
         }  
     }
     ```
+## 📝 느낀점
+
+- DaoFactory를 통해 DAO 객체 생성 시 의존 객체인 `ConnectionProtocol`을 주입받는 구조를 직접 구현함으로써,  
+  스프링의 핵심 개념인 IoC(Inversion of Control)와 DI(Dependency Injection)를 실습 차원에서 경험할 수 있었습니다.  
+  이 과정을 통해 객체 간 결합도를 낮추고, 유지보수성과 확장성이 뛰어난 구조에 대한 감각을 익힐 수 있었습니다.
