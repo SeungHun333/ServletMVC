@@ -6,7 +6,7 @@ Spring을 배우기 전에 간단하게 Servlet을 사용하여 MVC 패턴의 �
 
 ## 🧱 프로젝트 구조
 
-![MVC 구조도](./docs/mvc-diagram.png) <!-- 이미지 경로는 실제 위치에 따라 수정 -->
+![MVC 구조도](./docs/diagram.png) <!-- 이미지 경로는 실제 위치에 따라 수정 -->
 
 ---
 
