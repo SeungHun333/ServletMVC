@@ -1,4 +1,4 @@
-package org.kim.container.controller;
+package org.kim.container.servlet;
 
 import org.kim.container.dao.MemberDao;
 import org.kim.container.dao.factory.DaoFactory;
@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.stream.StreamSupport;
 
 @WebServlet("/updateMemberInfo")
 public class MemberUpdateInfoServlet extends HttpServlet {
@@ -53,7 +52,6 @@ public class MemberUpdateInfoServlet extends HttpServlet {
         if(result) {
             req.getRequestDispatcher("/WEB-INF/jsp/main.jsp").forward(req, resp);
         } else {
-            System.out.println("정보 업데이트에 실패했습니다.");
             req.getRequestDispatcher("/WEB-INF/jsp/updateMemberInfo.jsp").forward(req, resp);
         }
     }

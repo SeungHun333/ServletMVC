@@ -1,4 +1,4 @@
-package org.kim.container.controller;
+package org.kim.container.servlet;
 
 import org.kim.container.dao.MemberDao;
 import org.kim.container.dao.factory.DaoFactory;
@@ -26,21 +26,15 @@ public class MemberLoginOutServlet extends HttpServlet {
         String id = req.getParameter("id");
         String password = req.getParameter("password");
 
-        try {
-            Member member = dao.memberSelectForLogin(id, password);
+        Member member = dao.memberSelectForLogin(id, password);
 
-            resp.setContentType("text/plain;charset=UTF-8");
-            if (member != null) {
-                System.out.println("로그인 성공!!");
-                req.getSession().setAttribute("loginMember", member);
-                req.getRequestDispatcher("/WEB-INF/jsp/main.jsp").forward(req, resp);
-            } else {
-                System.out.println("로그인 실패!!");
-                resp.sendRedirect("login?result=error");
-            }
-        } catch (Exception e) {
-            e.printStackTrace(); // 콘솔에 예외 로그 출력!
-            resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        resp.setContentType("text/plain;charset=UTF-8");
+
+        if (member != null) {
+            req.getSession().setAttribute("loginMember", member);
+            req.getRequestDispatcher("/WEB-INF/jsp/main.jsp").forward(req, resp);
+        } else {
+            resp.sendRedirect("login?result=error");
         }
     }
 }

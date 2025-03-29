@@ -1,4 +1,4 @@
-package org.kim.container.controller;
+package org.kim.container.servlet;
 
 import org.kim.container.dao.MemberDao;
 import org.kim.container.dao.factory.DaoFactory;
@@ -11,15 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/checkEmail")
-public class MemberCheckEmailServlet extends HttpServlet {
+@WebServlet("/checkId")
+public class MemberCheckIdServlet extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         MemberDao dao = new DaoFactory().memberDao();
 
-        String email = req.getParameter("email");
+        String id = req.getParameter("id");
         MemberService service = new MemberService(dao);
-        boolean isDuplicate = service.isAvailableEmail(email);
+        boolean isDuplicate = service.isAvailableId(id);
 
         resp.setContentType("text/plain");
         resp.getWriter().write(isDuplicate ? "duplicate" : "available");

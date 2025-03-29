@@ -1,4 +1,4 @@
-package org.kim.container.controller;
+package org.kim.container.servlet;
 
 import org.kim.container.dao.MemberDao;
 import org.kim.container.dao.factory.DaoFactory;
@@ -23,18 +23,20 @@ public class MemberDeleteServlet extends HttpServlet {
 
         boolean isEqualsPassword = member.getPassword().equals(req.getParameter("password"));
 
-        if (isEqualsPassword) {
-            MemberDao dao = new DaoFactory().memberDao();
-            boolean success = dao.memberDelete(member.getUserNo());
-            if(success) {
-                req.getSession().invalidate();
-                resp.sendRedirect("index.html");
-                return;
-            } else {
-                req.setAttribute("result", "error");
-            }
-        } else {
+        if (!isEqualsPassword) {
             req.setAttribute("result", "deleteFail");
+            return;
+        }
+
+        MemberDao dao = new DaoFactory().memberDao();
+        boolean isDeleted = dao.memberDelete(member.getUserNo());
+
+        if(isDeleted) {
+            req.getSession().invalidate();
+            resp.sendRedirect("index.html");
+            return;
+        } else {
+            req.setAttribute("result", "error");
         }
 
         req.getRequestDispatcher("/WEB-INF/jsp/main.jsp").forward(req, resp);

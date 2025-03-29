@@ -1,4 +1,4 @@
-package org.kim.container.controller;
+package org.kim.container.servlet;
 
 import org.kim.container.dao.factory.DaoFactory;
 import org.kim.container.dao.MemberDao;
@@ -16,12 +16,6 @@ import java.util.List;
 
 @WebServlet("/member-list")
 public class MemberListServlet extends HttpServlet {
-
-    @Override
-    public void init() throws ServletException {
-        System.out.println("[MemberListServlet] init() 호출됨 — 서블릿 초기화 완료");
-    }
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if (!AuthUtil.isLoggedIn(req)) {

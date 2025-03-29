@@ -1,6 +1,6 @@
-package org.kim.container.controller;
+package org.kim.container.servlet;
 
-import org.kim.container.domain.Member;
+import org.kim.container.util.AuthUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,14 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/main")
-public class MainPageServlet extends HttpServlet {
+@WebServlet("/login")
+public class MemberLoginPageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Member loginMember = (Member) req.getSession().getAttribute("loginMember");
-
-        if (loginMember == null) {
-            resp.sendRedirect("login.jsp");
+        if (!AuthUtil.isLoggedIn(req)) {
+            req.getRequestDispatcher("/WEB-INF/jsp/login.jsp").forward(req, resp);
             return;
         }
 
