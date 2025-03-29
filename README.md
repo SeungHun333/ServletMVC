@@ -46,12 +46,48 @@ Spring을 배우기 전에 간단하게 Servlet을 사용하여 MVC 패턴의 �
 - `dao` 패키지에는 각 테이블에 대응하는 DAO 클래스가 위치한다.
 - DAO 클래스는 **SQL 실행**, **ResultSet 처리**, **자원 정리(close)** 등의 책임을 가진다.
 
-#### ✅ DaoFactory를 활용한 책임 분리 및 관심사 분리
+## 🏗 DaoFactory를 활용한 책임 분배 및 관심사 분리
 
-**🔸 ConnectionProtocol 인터페이스**
+- `ConnectionProtocol` 인터페이스 생성  
+  - Connection 객체를 전달하는 `getConnection` 함수와  
+  - 리소스를 닫아주는 `closeResource` 함수 선언  
+    
+    ``` java
+    public interface ConnectionProtocol {  
+        public Connection getConnection () throws SQLException, ClassNotFoundException;  
+        public void closeResource(ResultSet rs, PreparedStatement pstmt, Connection conn);  
+    }
+    ```
 
-```java
-public interface ConnectionProtocol {
-    public Connection getConnection () throws SQLException, ClassNotFoundException;
-    public void closeResource(ResultSet rs, PreparedStatement pstmt, Connection conn);
-}
+- `ConnectionProtocol`을 구현한 `MemberConnectionProtocol` 클래스를 생성하여 해당 interface 함수 구현  
+  
+    ```java
+    public class MemberConnectionProtocol implements ConnectionProtocol {  
+
+        @Override  
+        public Connection getConnection() throws SQLException, ClassNotFoundException {  
+            Class.forName("oracle.jdbc.driver.OracleDriver");  
+            return DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521/xepdb1", "hun", "3469");  
+        }  
+
+        @Override  
+        public void closeResource(ResultSet rs, PreparedStatement pstmt, Connection conn) {  
+            try {  
+                if (rs != null) rs.close();  
+                if (pstmt != null) pstmt.close();  
+                if (conn != null) conn.close();  
+            } catch (SQLException e) {  
+                e.printStackTrace();  
+            }  
+        }  
+    }
+    ```
+- `DaoFactory`에서 `ConnectionProtocol`을 생성자 파라미터로 받는 `MemberDao` 객체를 생성해서 리턴  
+
+    ``` java
+    public class DaoFactory {  
+        public MemberDao memberDao() {  
+            return new MemberDao(new MemberConnectionProtocol());  
+        }  
+    }
+    ```
