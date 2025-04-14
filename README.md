@@ -21,7 +21,7 @@ Spring을 학습하기에 앞서, Servlet을 활용하여 MVC 패턴의 서버 �
 
 #### ✅ Response
 - 처리 결과를 `HttpServletRequest`에 `setAttribute()`로 저장한 뒤,
-- `RequestDispatcher`를 이용하여 **JSP로 포워딩**하여 사용자에게 결과를 출력합니다.
+- `RequestDispatcher`로 **JSP로 포워딩**하여 사용자에게 결과를 출력합니다.
 - JSP는 **View의 역할**만 담당하며, 비즈니스 로직은 포함하지 않고 화면 구성만 수행합니다.
 - JSP에서는 `${}` 문법 등을 사용하여 request 범위의 데이터를 출력합니다.
 
@@ -30,7 +30,7 @@ Spring을 학습하기에 앞서, Servlet을 활용하여 MVC 패턴의 서버 �
 ### 📌 Business
 
 #### ✅ Domain
-- 도메인 모델(`Member`)은 데이터베이스의 `MEMBER` 테이블과 매핑되는 자바 객체입니다.
+- 도메인 모델(`Member`)은 데이터베이스의 `MEMBER` 테이블과 매핑되는 Entity입니다.
 - 회원 정보를 표현하는 데이터 구조로 사용되며, 주로 Service와 DAO 간의 데이터 전달에 활용됩니다.
 
 #### ✅ Service
